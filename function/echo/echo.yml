@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://a5f025492e1d411e8beb40e48a2251fe-250308801.us-east-1.elb.amazonaws.com:8080
+
+functions:
+  echo:
+    lang: python3
+    handler: ./echo
+    image: wangaoone/echo:latest

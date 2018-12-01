@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://a80e76943d67611e89391066bc3fd59e-187055756.us-west-1.elb.amazonaws.com:8080
+
+functions:
+  imagedownload:
+    lang: python3-debian
+    handler: ./imagedownload
+    image: wangaoone/imagedownload:latest
