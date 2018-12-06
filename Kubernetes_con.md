@@ -118,9 +118,8 @@ kubectl config use-context first.k8s.local
 ```
 
 #### Kubernetes config noed type
-```
 https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md
-```
 The current kops image doesn't work with 5th gen EC2 instances.
 
-New AWS instance types: P3, C5, M5, H1. Please note that NVME volumes are not supported on the default jessie image, so masters will not boot on M5 and C5 instance types unless a stretch image is chosen (change stretch to jessie in the image name). Also note that kubernetes will not support mounting persistent volumes on NVME instances until Kubernetes v1.9.
+New AWS instance types: P3, C5, M5, H1. Please note that NVME volumes are not supported on the default jessie image.
+https://github.com/kubernetes/kops/issues/5771
