@@ -1,9 +1,15 @@
 provider:
   name: faas
-  gateway: http://a5f025492e1d411e8beb40e48a2251fe-250308801.us-east-1.elb.amazonaws.com:8080
+  gateway: http://ac7b9aeb5f98a11e8a65e0eb24347ff7-1866464858.us-east-1.elb.amazonaws.com:8080
 
 functions:
   echo:
     lang: python3
     handler: ./echo
     image: wangaoone/echo:latest
+    environment:
+      write_debug: true
+    limits:
+      cpu: 10000m
+    requests:
+      cpu: 1000m

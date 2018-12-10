@@ -1,38 +1,22 @@
 import requests
-from PIL import Image
 from io import BytesIO
-from memory_profiler import profile
 import time
 import os
 from threading import Thread
 from time import sleep
 
 
-# @profile
-def handle(req):
-    response = requests.get(req)
-    image = Image.open(BytesIO(response.content))
-
-    print("If you get this shit, you finished")
-    print(image.size)
-    # opener = urllib.URLopener()
-    # myurl = 'https://s3.amazonaws.com/demo.cs795.ao/test.jpg'
-    # print opener.open(myurl)
-
-
 def invoke(count):
     for j in range(count):
         start = time.time()
-        fouput = os.popen(
-            # 'curl -s http://a5f025492e1d411e8beb40e48a2251fe-250308801.us-east-1.elb.amazonaws.com:8080/function/imagesize -d "https://s3.amazonaws.com/demo.cs795.ao/WechatIMG23.jpeg"')
-            # 'curl -s http://a5f025492e1d411e8beb40e48a2251fe-250308801.us-east-1.elb.amazonaws.com:8080/function/echo -d "test"')
-            # 'curl -s http://a5f025492e1d411e8beb40e48a2251fe-1463939600.us-east-1.elb.amazonaws.com:8080/function/echo -d "test"')
-            'curl -s http://ad40972d1f9d811e8a65e0eb24347ff7-320729993.us-east-1.elb.amazonaws.com/foobar')
+        fouput = os.popen(          
+            # 'curl -s http://ac7b9aeb5f98a11e8a65e0eb24347ff7-1866464858.us-east-1.elb.amazonaws.com:8080/function/echo -d "test"')
+            'curl -s http://ad40972d1f9d811e8a65e0eb24347ff7-320729993.us-east-1.elb.amazonaws.com/scale')
             # 'curl -s http://ac7b9aeb5f98a11e8a65e0eb24347ff7-1866464858.us-east-1.elb.amazonaws.com:8080/function/echo')
         result = fouput.readline()
         print result
-        # if len(result) == 22:
         if len(result) == 12:
+        # if len(result) == 22:    
             client_latency.append(time.time() - start)
 
 
@@ -48,7 +32,7 @@ class MyThread(Thread):
 
 
 def myThread(count):
-    num = 20
+    num = 25
     temp = count / num
     ths = []
     for thread in range(0, num):
@@ -61,8 +45,8 @@ def myThread(count):
 
 
 def main():
-    # size = [128, 256, 384, 512, 640, 768, 896, 1024, 1152, 1280]
-    size = [16000]
+    # size = [100,200,300,400,500,600,700,800,900,1000]
+    size = [5000]
     for j in size:
         # burst time
         start = time.time()
@@ -72,9 +56,9 @@ def main():
         # inter-arrival
         # sleep(10)
 
+
 if __name__ == "__main__":
-    # handle(
-    #     "https://s3.amazonaws.com/demo.cs795.ao/WechatIMG23.jpeg")
+
     client_latency = []
     perburst_time = []
 
