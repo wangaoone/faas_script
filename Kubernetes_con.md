@@ -116,3 +116,10 @@ Installing Kubernetes on AWS<br>https://medium.com/containermind/how-to-create-a
 ```
 kubectl config use-context first.k8s.local
 ```
+
+#### Kubernetes config noed type
+https://github.com/kubernetes/kops/blob/master/docs/instance_groups.md
+The current kops image doesn't work with 5th gen EC2 instances.
+
+New AWS instance types: P3, C5, M5, H1. Please note that NVME volumes are not supported on the default jessie image.
+https://github.com/kubernetes/kops/issues/5771
