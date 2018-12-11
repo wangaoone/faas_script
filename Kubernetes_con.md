@@ -123,3 +123,14 @@ The current kops image doesn't work with 5th gen EC2 instances.
 
 New AWS instance types: P3, C5, M5, H1. Please note that NVME volumes are not supported on the default jessie image.
 https://github.com/kubernetes/kops/issues/5771
+
+#### Kubernetes metric server
+https://github.com/kubernetes-incubator/metrics-server
+https://blog.csdn.net/ygqygq2/article/details/82971338
+```
+containers:
+      - name: metrics-server
+        args:
+          - --kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP
+          - --kubelet-insecure-tls
+```
