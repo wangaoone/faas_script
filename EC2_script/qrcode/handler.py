@@ -43,7 +43,7 @@ class MyThread(Thread):
 
 
 def myThread(count):
-    num = 16
+    num = 8
     temp = count / num
     ths = []
     for thread in range(0, num):
