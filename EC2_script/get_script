@@ -2,19 +2,19 @@
 
 # Parse arguments
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-POSTFIX=""
+PREFIX=""
 while getopts ":hp:" opt; do
     case "$opt" in
     h)
         echo "get_script [path_to_result]"
         echo "path_to_result: path to put result to relative to DATA directory"
         echo "options:"
-        echo "  -p postfix of result file"
+        echo "  -p prefix of result file"
         echo "  -h show help"
         exit 0
         ;;
     p)
-        POSTFIX=$OPTARG
+        PREFIX=$OPTARG
         ;;
     \?)
         ;;
@@ -37,10 +37,10 @@ HOME=/home/ec2-user
 DATA=$PWD/../data/$BASE
 
 mkdir -p $DATA
-rm -f $DATA/${POSTFIX}burst.txt
-rm -f $DATA/${POSTFIX}response.txt
+rm -f $DATA/${PREFIX}burst.txt
+rm -f $DATA/${PREFIX}response.txt
 for IP in "${IPS[@]}"
 do
-    /bin/sh -c "ssh -t ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com cat $HOME/$BASE/burst.txt" >> $DATA/${POSTFIX}burst.txt
-    /bin/sh -c "ssh -t ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com cat $HOME/$BASE/response.txt" >> $DATA/${POSTFIX}response.txt
+    /bin/sh -c "ssh -t ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com cat $HOME/$BASE/burst.txt" >> $DATA/${PREFIX}burst.txt
+    /bin/sh -c "ssh -t ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com cat $HOME/$BASE/response.txt" >> $DATA/${PREFIX}response.txt
 done
