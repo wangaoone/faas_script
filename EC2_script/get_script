@@ -37,10 +37,10 @@ HOME=/home/ec2-user
 DATA=$PWD/../data/$BASE
 
 mkdir -p $DATA
-echo "" > $DATA/${POSTFIX}burst.txt
-echo "" > $DATA/${POSTFIX}response.txt
+rm -f $DATA/${POSTFIX}burst.txt
+rm -f $DATA/${POSTFIX}response.txt
 for IP in "${IPS[@]}"
 do
-    /bin/sh -c "ssh ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com:$HOME/$BASE/burst.txt" >> $DATA/${POSTFIX}burst.txt
-    /bin/sh -c "ssh ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com:$HOME/$BASE/response.txt" >> $DATA/${POSTFIX}response.txt
+    /bin/sh -c "ssh -t ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com cat $HOME/$BASE/burst.txt" >> $DATA/${POSTFIX}burst.txt
+    /bin/sh -c "ssh -t ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com cat $HOME/$BASE/response.txt" >> $DATA/${POSTFIX}response.txt
 done
