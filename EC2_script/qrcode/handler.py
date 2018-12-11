@@ -2,6 +2,7 @@ import requests
 from io import BytesIO
 import time
 import os
+import sys
 from threading import Thread
 from time import sleep
 import requests
@@ -56,7 +57,7 @@ def myThread(count):
 
 def main():
     # size = [100,200,300,400,500,600,700,800,900,1000]
-    size = [5000]
+    size = [20000]
     for j in size:
         # burst time
         start = time.time()
@@ -71,23 +72,24 @@ if __name__ == "__main__":
 
     client_latency = []
     perburst_time = []
+    base = os.path.dirname(__file__)
 
     start = time.time()
     main()
     total = time.time() - start
 
-    fileObject = open('Total_time.txt', 'w')
+    fileObject = open(base + '/Total_time.txt', 'w')
     fileObject.write(str(total))
     fileObject.write('\n')
     fileObject.close()
 
-    fileObject = open('response.txt', 'w')
+    fileObject = open(base + '/response.txt', 'w')
     for i in client_latency:
         fileObject.write(str(i))
         fileObject.write('\n')
     fileObject.close()
 
-    fileObject = open('burst.txt', 'w')
+    fileObject = open(base + '/burst.txt', 'w')
     for i in perburst_time:
         fileObject.write(str(i))
         fileObject.write('\n')
