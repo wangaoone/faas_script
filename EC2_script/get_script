@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# Parse arguments
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+POSTFIX=""
+while getopts ":hp:" opt; do
+    case "$opt" in
+    h)
+        echo "get_script [path_to_result]"
+        echo "path_to_result: path to put result to relative to DATA directory"
+        echo "options:"
+        echo "  -p postfix of result file"
+        echo "  -h show help"
+        exit 0
+        ;;
+    p)
+        POSTFIX=$OPTARG
+        ;;
+    \?)
+        ;;
+    esac
+done
+shift $((OPTIND-1))
+
+PWD=`dirname $0`
+SCRIPT=echo/handler.py
+
+if [ -n "$1" ] ; then
+    SCRIPT=$1
+fi
+SCRIPT=${SCRIPT#$PWD/}
+
+IPS=("34.202.243.214" "18.210.41.120" "100.26.126.14" "34.225.128.240" "35.175.22.154")
+
+BASE=`dirname $SCRIPT`
+HOME=/home/ec2-user
+DATA=$PWD/../data/$BASE
+
+mkdir -p $DATA
+echo "" > $DATA/${POSTFIX}burst.txt
+echo "" > $DATA/${POSTFIX}response.txt
+for IP in "${IPS[@]}"
+do
+    /bin/sh -c "ssh ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com:$HOME/$BASE/burst.txt" >> $DATA/${POSTFIX}burst.txt
+    /bin/sh -c "ssh ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com:$HOME/$BASE/response.txt" >> $DATA/${POSTFIX}response.txt
+done

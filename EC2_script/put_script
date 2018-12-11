@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Parse arguments
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+while getopts ":hm" opt; do
+    case "$opt" in
+    h)
+        echo "put_script [path_to_script]"
+        echo "path_to_script: path to script, script should in sub directories of \"put_script\""
+        echo "options:"
+        echo "  -h show help"
+        exit 0
+        ;;
+    \?)
+        ;;
+    esac
+done
+shift $((OPTIND-1))
+
+PWD=`dirname $0`
+SCRIPT=echo/handler.py
+
+if [ -n "$1" ] ; then
+    SCRIPT=$1
+fi
+SCRIPT=${SCRIPT#$PWD/}
+
+IPS=("34.202.243.214" "18.210.41.120" "100.26.126.14" "34.225.128.240" "35.175.22.154")
+
+BASE=`dirname $SCRIPT`
+HOME=/home/ec2-user
+echo $SCRIPT
+echo $BASE
+exit;
+for IP in "${IPS[@]}"
+do
+    ssh -t ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com mkdir -p $HOME/$BASE
+    scp $PWD/$SCRIPT ec2-user@ec2-${IP//./-}.compute-1.amazonaws.com:$HOME/$SCRIPT
+done
