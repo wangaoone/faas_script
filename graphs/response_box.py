@@ -4,19 +4,27 @@ import plotly.graph_objs as go
 
 from parsers.response import Response
 
-def box(response):
-    data = go.Box(
+def box(responses):
+    data = map(lambda response: go.Box(
         y = response.series(Response.FIELD_RESPONSE),
-        x = map(lambda time: int(time), response.series(Response.FIELD_TIME)),
-        marker = dict( color = 'rgb(107,174,214)'),
-        line = dict( color = 'rgb(7,40,89)')
+        x = map(lambda time: int(time) / 10 * 10, response.series(Response.FIELD_TIME)),
+        boxmean = True,
+    ), responses)
+
+    layout = go.Layout(
     )
 
-    plotly.offline.plot([data], auto_open = True)
+    fig = go.Figure(data = data, layout = layout)
+    plotly.offline.plot(fig, auto_open = True)
 
 if __name__ == "__main__":
-    file = None
-    if len(sys.argv) > 1:
-        file = sys.argv[1]
+    files = []
+    for i in range(len(sys.argv) - 1):
+        files.append(sys.argv[i + 1])
 
-    box(Response.parse(file).filter(lambda record: record[Response.FIELD_STATUSCODE] == 200))
+    box(map(
+        lambda file: Response.parse(file).filter(
+            lambda record: record[Response.FIELD_STATUSCODE] == 200
+        ),
+        files
+    ))
