@@ -1,33 +1,8 @@
-import math
 import sys
 import plotly
 import plotly.graph_objs as go
-from scipy import stats
 
-def parse(file):
-    f = open(file,"r")
-
-    FIELD_TIME = 0
-    FIELD_STATUSCODE = 1
-    FIELD_RESPONSE = 2
-    FIELD_ELAPSE = 3
-
-    start = 9999999999
-    times = []
-    responses = []
-    fl = f.readlines()
-    for line in fl:
-        fields = line.split(",")
-        if fields[FIELD_STATUSCODE] == "200":
-            time = float(fields[FIELD_TIME])
-            if time < start:
-                start = time
-            times.append(time)
-            responses.append(float(fields[FIELD_RESPONSE]))
-    for i in range(len(times)):
-        times[i] = times[i] - start
-
-    return [times, responses]
+from parsers.response import Response
 
 def scatter(series):
     trace = go.Scatter(
@@ -43,4 +18,5 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         file = sys.argv[1]
 
-    scatter(parse(file))
+    response = Response.parse(file).filter(lambda record: record[Response.FIELD_STATUSCODE] == 200)
+    scatter([response.series(Response.FIELD_TIME), response.series(Response.FIELD_RESPONSE)])
