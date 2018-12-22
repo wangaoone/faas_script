@@ -109,3 +109,16 @@ kubectl port-forward -n openfaas svc/grafana 3000:3000
 --label com.openfaas.scale.zero=true
 ```
 Set the idler scale them to zero. You should also change the ```-dry-run flag to false```
+
+#### kubeless
+```
+def hello(event, context):
+  
+  print("dsa")
+  return "hello world" + event['data']
+```
+Using load balancer to expose the service
+```
+kubectl expose svc hello1 name=helloexternal1 --port=8888 \
+--target-port=8080 --type=LoadBalancer
+```
